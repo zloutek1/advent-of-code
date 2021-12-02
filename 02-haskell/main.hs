@@ -18,10 +18,10 @@ parseCommand input =
           readCommand "down" = Down
 
 evalCommands :: [Command] -> Int
-evalCommands = foldr (*) 1 . foldr updatePosition [0, 0]
-    where updatePosition (Forward by) [x, y] = [x + by, y]
-          updatePosition (Down by) [x, y] = [x, y + by]
-          updatePosition (Up by) [x, y] = [x, y - by]
+evalCommands = foldr (*) 1 . take 2 . foldl updatePosition [0, 0, 0]
+    where updatePosition [x, y, aim] (Forward by) = [x + by, y + aim * by, aim]
+          updatePosition [x, y, aim] (Down by) = [x, y, aim + by]
+          updatePosition [x, y, aim] (Up by) = [x, y, aim - by]
 
 main :: IO ()
 main = do
