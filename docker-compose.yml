@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  day01:
+    image: python:3.9
+    volumes: 
+      - ./01-python:/code
+    command: make -C /code
+  
+  day02:
+    image: haskell:9.2
+    volumes: 
+      - ./02-haskell:/code
+    command: make -C /code
+  
+  day03:
+    image: node:17.2.0
+    volumes: 
+      - ./03-typescript:/code
+    command: make -C /code install compile run clean
