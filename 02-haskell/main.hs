@@ -17,8 +17,14 @@ parseCommand input =
           readCommand "up" = Up
           readCommand "down" = Down
 
-evalCommands :: [Command] -> Int
-evalCommands = foldr (*) 1 . take 2 . foldl updatePosition [0, 0, 0]
+star1 :: [Command] -> Int
+star1 = foldr (*) 1 . take 2 . foldl updatePosition [0, 0]
+    where updatePosition [x, y] (Forward by) = [x + by, y]
+          updatePosition [x, y] (Down by) = [x, y + by]
+          updatePosition [x, y] (Up by) = [x, y - by]
+
+star2 :: [Command] -> Int
+star2 = foldr (*) 1 . take 2 . foldl updatePosition [0, 0, 0]
     where updatePosition [x, y, aim] (Forward by) = [x + by, y + aim * by, aim]
           updatePosition [x, y, aim] (Down by) = [x, y, aim + by]
           updatePosition [x, y, aim] (Up by) = [x, y, aim - by]
@@ -26,4 +32,10 @@ evalCommands = foldr (*) 1 . take 2 . foldl updatePosition [0, 0, 0]
 main :: IO ()
 main = do
     contents <- readFile "input.txt"
-    print $ evalCommands . map parseCommand . lines $ contents
+    let commands = map parseCommand . lines $ contents
+
+    putStr "[star1] "
+    putStrLn . show . star1 $ commands
+
+    putStr "[star2] "
+    putStrLn . show . star2 $ commands

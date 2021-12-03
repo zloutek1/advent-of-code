@@ -1,7 +1,7 @@
 all: compile run clean
 
 compile:
-	ghc -dynamic main.hs
+	ghc main.hs
 
 run:
 	./main

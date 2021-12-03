@@ -17,5 +17,7 @@ if __name__ == "__main__":
         depths = [int(depth) for depth in file.read().split()]
     
         star1 = calc_depth_increments(depths)
+        print("[star1]", star1)
+
         star2 = calc_depth_increments(map_to_window(depths, 3))
-        print(star2)
+        print("[star2]", star2)
