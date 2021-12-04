@@ -17,3 +17,9 @@ services:
     volumes: 
       - ./03-typescript:/code
     command: make -C /code install compile run clean
+  
+  day04:
+    image: gcc:11.2
+    volumes: 
+      - ./04-C:/code
+    command: make -C /code
