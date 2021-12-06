@@ -2,30 +2,36 @@ version: '3.3'
 services:
   day01:
     image: python:3.9
-    volumes: 
+    volumes:
       - ./01-python:/code
     command: make -C /code
-  
+
   day02:
     image: haskell:9.2
-    volumes: 
+    volumes:
       - ./02-haskell:/code
     command: make -C /code
-  
+
   day03:
     image: node:17.2.0
-    volumes: 
+    volumes:
       - ./03-typescript:/code
     command: make -C /code install compile run clean
-  
+
   day04:
     image: gcc:11.2
-    volumes: 
+    volumes:
       - ./04-C:/code
     command: make -C /code
-  
+
   day05:
     image: openjdk:18
-    volumes: 
+    volumes:
       - ./05-java:/code
     command: /code/make.sh -C /code
+
+  day06:
+    image: rust:1.57
+    volumes:
+      - ./06-rust:/code
+    command: make -C /code
