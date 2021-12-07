@@ -35,3 +35,9 @@ services:
     volumes:
       - ./06-rust:/code
     command: make -C /code
+
+  day07:
+    image: ocaml/opam
+    volumes:
+      - ./07-ocaml:/code
+    command: make -C /code
