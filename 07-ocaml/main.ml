@@ -11,8 +11,8 @@ let min_list = function
     []    -> invalid_arg "empty list"
   | x::xs -> List.fold_left min x xs
 
-let part1 data = 
-    let attempt goal = data |> List.map (fun x -> abs (x - goal)) |> sum in
+let allign_crabs f data =
+    let attempt goal = data |> List.map (f goal) |> sum in
     let maxi = max_list data in
     let mini = min_list data in
     range (maxi - mini) |> 
@@ -20,14 +20,17 @@ let part1 data =
     List.map attempt |> 
     min_list;;
 
+let part1 data = 
+    let f goal x = abs (x - goal) in
+    allign_crabs f data;;
+
 let part2 data = 
-    let attempt goal = data |> List.map (fun x -> let n = abs(x - goal) in n*(n+1)/2) |> sum in
-    let maxi = max_list data in
-    let mini = min_list data in
-    range (maxi - mini) 
-    |> List.map (fun x -> mini + x) 
-    |> List.map attempt 
-    |> min_list;;
+    let f goal x = 
+        let n = abs(x - goal) in 
+        n * ( n + 1) / 2 
+    in 
+    allign_crabs f data;;
+
 
 let parse_line line = String.split_on_char ',' line
                     |> List.map int_of_string;;
