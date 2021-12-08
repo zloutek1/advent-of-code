@@ -41,3 +41,9 @@ services:
     volumes:
       - ./07-ocaml:/code
     command: make -C /code
+
+  day08:
+    image: gcc:11.2
+    volumes:
+      - ./08-cpp:/code
+    command: make -C /code
