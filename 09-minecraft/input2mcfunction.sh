@@ -2,19 +2,19 @@
 
 set -e
 
-dev=true # example || input
+dev=false # example || input
 
 if [[ $dev = true ]]; then
     input_filename=./example_input.txt
-    output_filename=./functions/example.mcfunction
-    sed -i 's/input:input/input:example/' ../make/functions/install.mcfunction
+    output_filename=./data/input/functions/example.mcfunction
+    sed -i 's/input:input/input:example/' ./data/make/functions/install.mcfunction
 else
     input_filename=./input.txt
-    output_filename=./functions/input.mcfunction
-    sed -i 's/input:example/input:input/' ../make/functions/install.mcfunction
+    output_filename=./data/input/functions/input.mcfunction
+    sed -i 's/input:example/input:input/' ./data/make/functions/install.mcfunction
 fi
 
-rm ./functions/**
+rm -f ./data/input/functions/**
 
 function str_to_mc() {
     # $1 - str

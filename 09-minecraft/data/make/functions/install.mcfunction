@@ -1,5 +1,5 @@
 #function input:allocate
-function input:example
+function input:input
 
 # increase the recursion limit
 gamerule maxCommandChainLength 655360
