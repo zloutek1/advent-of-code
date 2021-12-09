@@ -16,4 +16,6 @@ execute as @e[tag=lowest] run scoreboard players operation risk_total vars += 1 
 execute as @e[tag=lowest] run effect give @s glowing 999 1
 
 # print result
-tellraw @a ["",{"text":"[Part1] ","color":"gold"},{"score":{"name":"risk_total","objective":"vars"}}]
+data merge block 8 4 8 {Text1:'["",{"text":"[Part1]","color":"gold"},{"text":" "},{"score":{"name":"risk_total","objective":"vars"}}]'}
+data modify entity @e[tag=result_printer,limit=1] CustomName set from block 8 4 8 Text1
+say @e[tag=result_printer,limit=1]

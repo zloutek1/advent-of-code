@@ -1,3 +1,5 @@
+forceload add 0 0 15 15
+
 #function input:allocate
 function input:input
 
@@ -29,3 +31,7 @@ scoreboard objectives add lows dummy
 scoreboard objectives add basins dummy
 scoreboard objectives add basin_counter dummy
 scoreboard objectives add leaderboard dummy
+
+summon armor_stand 0 0 0 {Tags: [result_printer], NoGravity: 1b}
+setblock 8 3 8 oak_log
+setblock 8 4 8 oak_sign

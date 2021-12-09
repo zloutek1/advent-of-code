@@ -32,4 +32,6 @@ scoreboard players operation three_largest vars *= 2nd leaderboard
 scoreboard players operation three_largest vars *= 3rd leaderboard
 
 # display result
-tellraw @a ["",{"text":"[Part2] ","color":"gold"},{"score":{"name":"three_largest","objective":"vars"}}]
+data merge block 8 4 8 {Text1:'["",{"text":"[Part2]","color":"gold"},{"text":" "},{"score":{"name":"three_largest","objective":"vars"}}]'}
+data modify entity @e[tag=result_printer,limit=1] CustomName set from block 8 4 8 Text1
+say @e[tag=result_printer,limit=1]
