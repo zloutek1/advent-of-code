@@ -1,5 +1,5 @@
 #function input:allocate
-function input:input
+function input:example
 
 # increase the recursion limit
 gamerule maxCommandChainLength 655360
@@ -26,3 +26,6 @@ scoreboard players set ord('0') numbers 48
 scoreboard objectives add vars dummy
 scoreboard objectives add values dummy
 scoreboard objectives add lows dummy
+scoreboard objectives add basins dummy
+scoreboard objectives add basin_counter dummy
+scoreboard objectives add leaderboard dummy

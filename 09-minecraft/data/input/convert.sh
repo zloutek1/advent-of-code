@@ -2,7 +2,7 @@
 
 set -e
 
-dev=false # example || input
+dev=true # example || input
 
 if [[ $dev = true ]]; then
     input_filename=./example_input.txt

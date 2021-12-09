@@ -15,4 +15,5 @@ execute as @e[tag=lowest] run scoreboard players operation risk_total vars += @s
 execute as @e[tag=lowest] run scoreboard players operation risk_total vars += 1 numbers
 execute as @e[tag=lowest] run effect give @s glowing 999 1
 
+# print result
 tellraw @a ["",{"text":"[Part1] ","color":"gold"},{"score":{"name":"risk_total","objective":"vars"}}]
