@@ -61,3 +61,9 @@ services:
     volumes:
       - /tmp/aoc09:/data
       - ./09-minecraft:/data/world/datapacks/AoC
+
+  day10:
+    image: cmplopes/alpine-freepascal
+    volumes:
+      - ./10-pascal:/code
+    command: /code/make.sh -C /code
