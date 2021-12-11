@@ -67,3 +67,9 @@ services:
     volumes:
       - ./10-pascal:/code
     command: /code/make.sh -C /code
+
+  day11:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    volumes:
+      - ./11-csharp:/code
+    entrypoint: /code/make.sh -C /code
