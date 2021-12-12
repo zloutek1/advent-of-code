@@ -12,16 +12,17 @@
 - 09. Minecraft functions
 - 10. Pascal
 - 11. C#
-- 12. VBA
+- 12. Julia
 - 13. Agda
 - 14. Lisp
 - 15. Lua
 - 16. Dart
 - 17. Swift
 - 18. Objective-C
-- 19. Go 
+- 19. Go
 - 20. Php
 - 21. SQL
 - 22. Assembly
-- 23. Excel
+- 23. Ruby
 - 24. Perl
+
