@@ -21,32 +21,7 @@ function parse(filepath)
     edges
 end
 
-function part1(edges, current, visited)
-    paths = 0
-    for option in edges[current]
-        visited_copy = copy(visited)
-        if option == "end"
-            paths += 1
-            continue
-        end
-
-        if option == "start"
-            continue
-        end
-
-        if islowercase(option[1])
-            if option in visited
-                continue
-            end
-            push!(visited_copy, option)
-        end
-        
-        paths += part1(edges, option, visited_copy)
-    end
-    paths
-end
-
-function part2(edges, current, visited, visited_twice)
+function dfs(edges, current, visited, visited_twice)
     paths = 0
     for option in edges[current]
         visited_copy = copy(visited)
@@ -70,14 +45,14 @@ function part2(edges, current, visited, visited_twice)
             push!(visited_copy, option)
         end
         
-        paths += part2(edges, option, visited_copy, visited_twice_copy)
+        paths += dfs(edges, option, visited_copy, visited_twice_copy)
     end
     paths
 end
 
 edges = parse("input.txt")
-result = part1(edges, "start", [])
+result = dfs(edges, "start", [], true)
 println("[Part1] $result")
-result = part2(edges, "start", [], false)
+result = dfs(edges, "start", [], false)
 println("[Part2] $result")
 
