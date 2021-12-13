@@ -13,7 +13,7 @@
 - 10. Pascal
 - 11. C#
 - 12. Julia
-- 13. Agda
+- 13. ~Agda~ Haskell
 - 14. Lisp
 - 15. Lua
 - 16. Dart
