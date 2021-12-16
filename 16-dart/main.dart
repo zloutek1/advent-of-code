@@ -1,8 +1,15 @@
 import 'dart:io';
 import 'dart:async';
+import 'dart:math';
 
 extension E on String {
   String lastChars(int n) => substring(length - n);
+}
+
+class Packet {
+    int version = 0;
+    int type_id = 0;
+    int value = 0;
 }
 
 class Parser {
@@ -49,42 +56,79 @@ class Parser {
     }
 
     int parse_packet() {
-        var versions_sum  = 0;
-
-        var version = parse_version();
-        var type_id = parse_type_id();
-        if (type_id == 4) {
-            var value = parse_literal_value();
+        var packet = new Packet();
+        packet.version = parse_version();
+        packet.type_id = parse_type_id();
+        if (packet.type_id == 4) {
+            packet.value = parse_literal_value();
         } else {
             var length_type_id = parse_length_type_id();
             if (length_type_id == 0) {
                 var length = parse_bits_of_length(15);
-                versions_sum += parse_operator_of_length(length);
+                packet.value = parse_operator_of_length(packet, length);
             } else {
                 var count = parse_bits_of_length(11);
-                versions_sum += parse_operator_of_packets(count);
+                packet.value = parse_operator_of_packets(packet, count);
             }
         }
-
-        versions_sum += version;
-        return versions_sum;
+        return packet.value;
     }
 
-    int parse_operator_of_length(int length) {
-        var versions_sum = 0;
+    int parse_operator_of_length(Packet oper, int length) {
+        var operands = [];
         int start_pos = this.pos;
         do {
-            versions_sum += parse_packet();
+            operands.add(parse_packet());
         } while (this.pos - start_pos < length);
-        return versions_sum;
+
+        return eval_operator(oper, operands);
     }
 
-    int parse_operator_of_packets(int operators) {
-        var versions_sum = 0;
+    int parse_operator_of_packets(Packet oper, int operators) {
+        var operands = [];
         for( var i = 0 ; i < operators; ++i ) {
-            versions_sum += parse_packet();
+            operands.add(parse_packet());
         }
-        return versions_sum;
+        return eval_operator(oper, operands);
+    }
+
+    int eval_operator(Packet oper, List operands) {
+        switch (oper.type_id) {
+            case 0: return sum_operands(operands);
+            case 1: return mul_operands(operands);
+            case 2: return min_operands(operands);
+            case 3: return max_operands(operands);
+            case 5: return gt_operands(operands);
+            case 6: return lt_operands(operands);
+            case 7: return eq_operands(operands);
+        }
+        throw Exception('Unreachable');
+    }
+
+    int sum_operands(List operands) {
+        return operands.fold(0, (acc, oper) => (acc + oper).toInt());
+    }
+    int mul_operands(List operands) {
+        return operands.fold(1, (acc, oper) => (acc * oper).toInt());
+    }
+    int min_operands(List operands) {
+        var x = operands[0];
+        var xs = operands.sublist(1);
+        return xs.fold(x, (acc, oper) => min(acc, oper));
+    }
+    int max_operands(List operands) {
+        var x = operands[0];
+        var xs = operands.sublist(1);
+        return xs.fold(x, (acc, oper) => max(acc, oper));
+    }
+    int gt_operands(List operands) {
+        return operands[0] > operands[1] ? 1 : 0;
+    }
+    int lt_operands(List operands) {
+        return operands[0] < operands[1] ? 1 : 0;
+    }
+    int eq_operands(List operands) {
+        return operands[0] == operands[1]  ? 1 : 0;
     }
 
     int parse_version() {
@@ -113,6 +157,6 @@ class Parser {
 void main() async {
     File('input.txt').readAsString().then((String contents) {
         var parser = new Parser(contents);
-        print(parser.parse());
+        print("[Part2] ${parser.parse()}");
     });
 }

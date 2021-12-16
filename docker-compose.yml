@@ -79,3 +79,9 @@ services:
     volumes:
       - ./12-julia:/code
     entrypoint: /code/make.sh -C /code
+
+  day16:
+    image: dart
+    volumes:
+      - ./16-dart:/code
+    command: /code/make.sh -C /code
