@@ -14,7 +14,13 @@ typealias Velocity = (x: Int, y: Int)
 let gravity = 1
 
 func drag(_ velocity: Velocity) -> Int {
-    return velocity.x > 0 ? 1 : -1
+    if velocity.x > 0 {
+        return 1
+    } else if velocity.x < 0 {
+        return -1
+    } else {
+        return 0
+    }
 }
 
 func radians(angle deg: Double) -> Double {
@@ -24,7 +30,7 @@ func radians(angle deg: Double) -> Double {
 func doesHit(_ start: Point, _ goal: Range2D, velocity initial_velocity: Velocity) -> Bool {
     var current = start
     var velocity = initial_velocity
-    while current.x < goal.xs.upperBound && current.y > goal.ys.lowerBound {
+    while current.x <= goal.xs.upperBound && current.y >= goal.ys.lowerBound {
         current.x += velocity.x
         current.y += velocity.y
         velocity.x -= drag(velocity)
@@ -51,8 +57,9 @@ func maxHeight(_ start: Point, velocity initial_velocity: Velocity) -> Point {
     return previous!
 }
 
-func part1(start: Point, goal: Range2D) {
+func solve(start: Point, goal: Range2D) {
     var largestHeight = Int.min
+    var velocities: [Velocity] = []
     for y in -2000...2000 {
         for x in 0...2000 {
             if doesHit(start, goal, velocity: (x: x, y: y)) {
@@ -60,10 +67,12 @@ func part1(start: Point, goal: Range2D) {
                 if height.y > largestHeight {
                     largestHeight = height.y
                 }
+                velocities.append((x: x, y: y))
             }
         }
     }
     print("[Part1]", largestHeight)
+    print("[Part2]", velocities.count)
 }
 
 func parseFile(filename: String) throws -> Range2D {
@@ -77,4 +86,4 @@ func parseFile(filename: String) throws -> Range2D {
 }
 
 let goal = try parseFile(filename: "input.txt")
-part1(start: (x: 0, y: 0), goal: goal)
+solve(start: (x: 0, y: 0), goal: goal)
