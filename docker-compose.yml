@@ -85,3 +85,9 @@ services:
     volumes:
       - ./16-dart:/code
     command: /code/make.sh -C /code
+
+  day17:
+    image: swift:5.5
+    volumes:
+      - ./17-swift:/code
+    command: make -C /code
