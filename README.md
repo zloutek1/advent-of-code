@@ -18,11 +18,11 @@
 - 15. Lua
 - 16. Dart
 - 17. Swift
-- 18. Objective-C
-- 19. Go
-- 20. Php
-- 21. SQL
-- 22. Assembly
-- 23. Ruby
-- 24. Perl
-
+- 18. ~Objective-C~ Python
+- 19. SQL
+- 20. Go
+- 21. Php
+- 22. ???
+- 23. Assembly
+- 24. Ruby
+- 25. Perl
