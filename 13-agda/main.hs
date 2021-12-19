@@ -33,6 +33,9 @@ foldSheet :: Action -> [Point] -> [Point]
 foldSheet (FoldUp y) points = let (up, down) = partition ((< y) . snd) points in nub $ up ++ map (\(x1, y1) -> (x1, 2*y - y1)) down
 foldSheet (FoldLeft x) points = let (left, right) = partition ((< x) . fst) points in nub $ left ++ map (\(x1, y1) -> (2*x - x1, y1)) right
 
+-- part1 :: [Point] -> [Action] -> Int
+-- part1 points actions = length $ foldSheet (head actions) points
+
 part1 :: [Point] -> [Action] -> Int
 part1 points actions = length $ foldSheet (head actions) points
 
@@ -44,5 +47,6 @@ part2 points actions = foldl (flip foldSheet) points actions
 
 main = do
     (points, actions) <- parseFile "input.txt"
+    putStrLn $ show points
     putStr "[Part1] " >> print (part1 points actions)
     putStr "[Part2] \n" >> putStr (draw $ part2 points actions)
