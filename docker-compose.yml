@@ -80,6 +80,13 @@ services:
       - ./12-julia:/code
     entrypoint: /code/make.sh -C /code
 
+  day13:
+    build:
+      context: ./13-agda
+    volumes:
+      - ./13-agda:/code
+    entrypoint: /code/make.sh -C /code
+
   day16:
     image: dart
     volumes:
@@ -90,4 +97,10 @@ services:
     image: swift:5.5
     volumes:
       - ./17-swift:/code
+    command: make -C /code
+
+  day20:
+    image: golang:1.17
+    volumes:
+      - ./20-go:/code
     command: make -C /code
