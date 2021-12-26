@@ -1,3 +1,43 @@
+PriorityQueue = {
+    __index = {
+        put = function(self, p, v)
+            local q = self[p]
+            if not q then
+                q = {first = 1, last = 0}
+                self[p] = q
+            end
+            q.last = q.last + 1
+            q[q.last] = v
+        end,
+        pop = function(self)
+            -- sort keys
+            local sorted_keys = {}
+            for k in pairs(self) do table.insert(sorted_keys, k) end
+            table.sort(sorted_keys)
+
+            for _, p in ipairs(sorted_keys) do
+                q = self[p]
+                if q.first <= q.last then
+                    local v = q[q.first]
+                    q[q.first] = nil
+                    q.first = q.first + 1
+                    return p, v
+                else
+                    self[p] = nil
+                end
+            end
+        end
+    },
+    __call = function(cls)
+        return setmetatable({}, cls)
+    end
+}
+
+setmetatable(PriorityQueue, PriorityQueue)
+
+
+
+
 function equals(a, b)
     if #a ~= #b then
         return false
@@ -43,11 +83,11 @@ function print_distances(table)
 end
 
 
-function print_grid(table)
-    for y = 1, DIMENSIONS do
-        for x = 1, DIMENSIONS do
+function print_grid(table, w, h)
+    for y = 1, h do
+        for x = 1, w do
             if table[y][x] == nil then
-                io.write("nil ")
+                io.write(" nil")
             else
                 io.write(string.format("% 4d", table[y][x]))
             end
@@ -62,6 +102,28 @@ function print_path(arr)
             io.write("nil ")
         else
             io.write(string.format("(%d, %d), ", getX(arr[i]), getY(arr[i])))
+        end
+    end
+end
+
+function print_queue(pq)
+    for prio, queue in pairs(pq) do
+        for key, item in pairs(queue) do
+            if key ~= "first" and key ~= "last" then
+                io.write(string.format("(%d, (%d, %d)), ", prio, getX(item) - 1, getY(item) - 1))
+            end
+        end
+    end
+    print()
+end
+
+
+function print_arr(arr)
+    for i = 1, #arr do
+        if arr[i] == nil then
+            io.write("nil, ")
+        else
+            io.write(string.format("%d, ", arr[i]))
         end
     end
 end
@@ -82,7 +144,6 @@ function getX(index)
 end
 
 
-
 function getNeighbors(graph, pos)
     local x, y = getX(pos), getY(pos)
 
@@ -95,65 +156,74 @@ function getNeighbors(graph, pos)
     return neighbors
 end
 
-function dijkstra(graph, start)
+function dijkstra(graph, start, goal)
 
-    distances = {}
-    distances[start] = graph[getY(start)][getX(start)]
+    queue = PriorityQueue()
+    queue:put(0, start)
 
-    toVisit = { start }
     visited = {}
 
-    parent = {}
-
-    local i = 1
-    while #toVisit > 0 do
-        local current = toVisit[i]
-        table.insert(visited, current)
-
-        if current == nil then
-            return { distances = distances, parent = parent }
+    for risk, current in queue.pop, queue do
+        if current == goal then
+            return risk
         end
+
+        if visited[current] ~= nil then
+            goto continue
+        end
+
+        visited[current] = true
 
         for _, neighbor in pairs(getNeighbors(graph, current)) do
-            local x, y = getX(neighbor), getY(neighbor)
-            local distance = graph[y][x]
-
-            if not contains(visited, neighbor) then
-                local oldCost = default(distances[neighbor], 9999)
-                local newCost = distances[current] + distance
-
-                if newCost < oldCost then
-                    table.insert(toVisit, neighbor)
-                    distances[neighbor] = newCost
-                    parent[neighbor] = current
-                end
+            if visited[neighbor] == nil then
+                local x, y = getX(neighbor), getY(neighbor)
+                queue:put(risk + graph[x][y], neighbor)
             end
         end
-        i = i + 1
+
+        ::continue::
     end
 end
 
-function getPath(parent, goal)
-    local path = {goal}
 
-    local current = goal
+function extend_grid(grid, offsetX, offsetY)
+    for y = (DIMENSIONS * offsetY + 1), (DIMENSIONS * (offsetY + 1)) do
+        for x = (DIMENSIONS * offsetX + 1), (DIMENSIONS * (offsetX + 1)) do
+            i = (y - 1) % DIMENSIONS + 1
+            j = (x - 1) % DIMENSIONS + 1
 
-    while parent[parent[current]] ~= nil do
-        table.insert(path, parent[current])
-        current = parent[current]
+            if grid[y] == nil then
+                grid[y] = {}
+            end
+            grid[y][x] = (grid[i][j] + offsetX + offsetY - 1) % 9 + 1
+        end
     end
-
-    return path
+    return grid
 end
 
-function sumPath(graph, path)
-    local sum = 0
 
-    for _, cell in pairs(path) do
-        sum = sum + graph[getY(cell)][getX(cell)]
+function part1()
+    DIMENSIONS = #graph
+    start = point(1, 1)
+    goal = point(DIMENSIONS, DIMENSIONS)
+
+    result = dijkstra(graph, start, goal)
+    print("[Part1]", result)
+end
+
+function part2()
+    for offsetY = 0, 4 do
+        for offsetX = 0, 4 do
+            graph = extend_grid(graph, offsetX, offsetY)
+        end
     end
 
-    return sum
+    DIMENSIONS = #graph
+    start = point(1, 1)
+    goal = point(DIMENSIONS, DIMENSIONS)
+
+    result = dijkstra(graph, start, goal)
+    print("[Part2]", result)
 end
 
 function parseFile(filename)
@@ -171,14 +241,9 @@ function parseFile(filename)
     return graph
 end
 
-DIMENSIONS = 100
-start = point(1, 1)
-goal = point(DIMENSIONS, DIMENSIONS)
-
 graph = parseFile("input.txt")
 
-result = dijkstra(graph, start)
-distances, parent = result["distances"], result["parent"]
-path = getPath(parent, goal)
+part1()
+part2()
 
-print("[Part1]", sumPath(graph, path) - 1)
+
