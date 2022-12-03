@@ -2,7 +2,7 @@
 assert ← {⍺ ← 'assertion failure' ⋄ 0 ∊ ⍵: ⍺ ⎕signal 8 ⋄ shy ← 0}
 
 priority ← 1+ ((819⌶⎕A),⎕A)∘ ⍳
-part1 ← +/ {priority ⊃ {⍵[0;]∩⍵[1;]} {2 (2÷⍨≢⍵)⍴⍵} ⍵}¨
+part1 ← +/ {priority ⊃ ∩/ ↓ {2 (2÷⍨≢⍵)⍴⍵} ⍵}¨
 part2 ← +/ {priority ⊃¨ ∩/ {(3÷⍨≢⍵) 3⍴⍵} ⍵}
 
 
