@@ -1,7 +1,7 @@
 ⎕IO ← 0
 
 
-priority ← 1+ ((819⌶⎕A),⎕A)∘ ⍳
+priority ← 1+ ((⎕C,⊢)⎕A)∘ ⍳
 part1 ← +/ {priority ⊃¨ ∩/ ↓ {2 (2÷⍨≢⍵)⍴⍵} ⍵}¨
 part2 ← +/ {priority ⊃¨ ∩/ {(3÷⍨≢⍵) 3⍴⍵} ⍵}
 
