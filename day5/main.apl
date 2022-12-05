@@ -14,12 +14,11 @@ push ← {items pos ← ⍺ ⋄ ((⊂ items, pos⊃ ⍵)@pos) ⍵}
 move ← {
     amount from to ← ⍺ 
     items rest ← (amount from) pop ⍵
-    (items to) push rest
+    (⍺⍺ items) to push rest
 }
 
-repeat_pop ← {times from to ← ⍺ ⋄({(1, from to) move ⍵}⍣times) ⍵}
-part1 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) repeat_pop ⍺)∇(1↓⍵)} moves}
-part2 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) move ⍺)∇(1↓⍵)} moves}
+part1 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) ⌽move ⍺)∇(1↓⍵)} moves}
+part2 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) ⊢move ⍺)∇(1↓⍵)} moves}
 
 
 data ← ⊃⎕NGET ⍞1
