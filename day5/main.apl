@@ -2,23 +2,18 @@
 
 
 parse ← {
-    cr mo ← {⍵⊆⍨0≠≢¨⍵} ⍵
-    crates ← {⍵/⍨' '≠⍵}¨↓⍉↑{1⌷⍉(4÷⍨1+≢⍵) 4⍴⍵}¨ cr
-    moves ← {(-∘1@1 2) ⍎¨ 1⌷⍉3 2⍴⍵⊆⍨' '≠⍵}¨ mo
-    (crates moves)
+    c m ← {⍵⊆⍨0≠≢¨⍵} ⍵
+    c ← {⍵/⍨' '≠⍵}¨↓⍉↑{1⌷⍉(4÷⍨1+≢⍵) 4⍴⍵}¨ c
+    m ← ⌽{(-∘1@1 2) ⍎¨ 1⌷⍉3 2⍴⍵⊆⍨' '≠⍵}¨ m
+    m,⊂c
 }
 
-pop ← {amount pos ← ⍺ ⋄ (amount↑ pos⊃ ⍵) (((⊂ amount↓ pos⊃ ⍵)@pos) ⍵) }
-push ← {items pos ← ⍺ ⋄ ((⊂ items, pos⊃ ⍵)@pos) ⍵}
+pop ← {k pos ← ⍺ ⋄ (k↑ pos⊃ ⍵) (((⊂ k↓ pos⊃ ⍵)@pos) ⍵) }
+push ← {x pos ← ⍺ ⋄ ((⊂ x, pos⊃ ⍵)@pos) ⍵}
+move ← {k from to ← ⍺ ⋄ x xs ← (k from) pop ⍵ ⋄ (⍺⍺ x) to push xs }
 
-move ← {
-    amount from to ← ⍺ 
-    items rest ← (amount from) pop ⍵
-    (⍺⍺ items) to push rest
-}
-
-part1 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) ⌽move ⍺)∇(1↓⍵)} moves}
-part2 ← {crates moves ← parse ⍵ ⋄ ⊃¨ {⍺ ← crates ⋄ 0=≢⍵: ⍺ ⋄ ((⊃⍵) ⊢move ⍺)∇(1↓⍵)} moves}
+part1 ← {⊃¨⊃ ⌽move/ parse ⍵}
+part2 ← {⊃¨⊃ ⊢move/ parse ⍵}
 
 
 data ← ⊃⎕NGET ⍞1
