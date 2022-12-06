@@ -1,10 +1,9 @@
 ⎕IO ← 0
 
 
-split ← {⍵⊆⍨⍺≠⍵}
-parse ← {⍎¨¨ '-'split¨ ','split ⍵}
-part1 ← +/ {(≢>(⊢⍳(⊃⌈⌿),(1⊃⌊⌿))) ↑ parse ⍵}¨
-part2 ← +/ {((⊃⌈⌿)≤(1⊃⌊⌿)) ↑ parse ⍵}¨
+parse ← (',-'∘(⍎¨(~∊⍨)⊆⊢))
+part1 ← +/ {a b c d ← parse ⍵ ⋄ 0≥(a-c)×(b-d)}¨
+part2 ← +/ {a b c d ← parse ⍵ ⋄ 0≥(a-d)×(b-c)}¨
 
 
 data ← ⊃⎕NGET ⍞1
