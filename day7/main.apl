@@ -1,26 +1,15 @@
-⎕IO ← 1
+⎕IO ← 0
 
 shift ← {(⊃1↑⍵) (1↓⍵)}
-cd ← {
-    f rest←shift ⍵
-    ⎕←2 f rest
-    subdir rest←(⊂f)parse rest
-    0=≢rest:(⍺,⊂subdir) rest
-    (⍺,⊂subdir)parse rest
-}
-parse ← {
-    ⍺←⍬
-    f rest←shift ⍵
-    ⎕←1 f rest
-    '$ cd /'≡f: (⍺,⊂f) ∇ rest
-    '$ cd ..'≡f: ⍺ rest
-    ∧/'$ cd'∊f: ⍺ cd ⍵
-    '$ ls'≡f: ⍺∇rest
-    0=≢rest: (⍺,⊂f) rest
-    (⍺,⊂f)∇ rest
-}
+filter ← ('cd .+|\d+'⎕S'&')
+cd ← {sub xs←⍬ parse ⍵ ⋄ 0≡≢xs:(⍺,⊂sub)⍬ ⋄ (⍺,⊂sub)parse xs}
+parse ← {⍺←⍬ ⋄ x xs←shift ⍵ ⋄ 0≡≢xs:(⍺,1⍴⍎x)⍬ ⋄ '.'∊x:⍺ xs ⋄ 'c'∊x:⍺ cd xs ⋄ (⍺,1⍴⍎x)∇xs}
 
-part1 ← {parse ⍵}
+⍝ du ← {⍺ ← 0 ⋄ x xs ← shift ⍵ ⋄ ⍬≡xs: x ⋄ x≡⊃x: ∇xs ⋄ x}
+⍝ du ← ({∧/(⍬≡⍴)¨⍵: +/⍵ ⋄ ∇¨⍵}⍣1) (1 1(1 1(1 1)))
+du ← {⍬≡⍴⍵: ⍵ 0 ⋄ ∧/(⍬≡⍴)¨⍵: {s←+/⍵ ⋄ 100000≥s: s s ⋄ s 0}⍵ ⋄ val ret ← ↓⍉↑∇¨⍵ ⋄ val (+/ret)}
+
+part1 ← {sub sum ← du ⍵ ⋄ ⍬≡⍴sub: sum ⋄ sum+∇sub} ∘ parse ∘ filter
 part2 ← 1
 
 
