@@ -6,8 +6,10 @@ dir a
 dir d
 $ cd a
 $ ls
-dir x
-dir y
+dir e
+29116 f
+2557 g
+62596 h.lst
 $ cd e
 $ ls
 584 i
