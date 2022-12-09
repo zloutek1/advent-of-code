@@ -6,9 +6,7 @@ parse ← {a b←⍵⋄(⊃todir a) (⍎b)}¨ ' '∘(≠⊆⊢)¨
 future ← {dir by ← ⍵ ⋄ by/⊂dir}¨
 
 parts ← /∘(⊂0 0)
-sgn ← {⍵<0:¯1 ⋄ ⍵>0:1 ⋄ 0}
-
-move_toward ← {∧/1≥|⍵-⍺: ⍺ ⋄ ⍺+ sgn¨ ⍵-⍺}
+move_toward ← {∧/1≥|⍵-⍺: ⍺ ⋄ ⍺+ ×¨ ⍵-⍺}
 forward_body ← {acc x ← ⍵ ⋄ next ← ⍺ move_toward x ⋄ ((⊂next),acc) next}
 move ← { next ← (⍵+⊃¯1↑⍺) ⋄ (⊂next),⍨ ⊃⊃forward_body/ (¯1↓⍺),(⊂⍬ next)}
 
