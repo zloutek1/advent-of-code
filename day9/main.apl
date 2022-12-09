@@ -1,8 +1,7 @@
 ⎕IO ← 0
 
-moves ← ↑('U' (0 1))('D' (0 ¯1))('L' (¯1 0))('R' (1 0))
-todir ← {((0⌷⍉moves)⍳⍵) 1⌷moves}
-parse ← {a b←⍵⋄(⊃todir a) (⍎b)}¨ ' '∘(≠⊆⊢)¨
+todir ← (⊃((⊢,-,⌽¨,-∘⌽¨)⊂⍳2) ⌷⍨ 'UDRL'∘⍳)
+parse ← {a b←⍵⋄(todir a) (⍎b)}¨ ' '∘(≠⊆⊢)¨
 future ← {dir by ← ⍵ ⋄ by/⊂dir}¨
 
 parts ← /∘(⊂0 0)
