@@ -12,20 +12,14 @@ move_toward ← {∧/1≥|⍵-⍺: ⍺ ⋄ ⍺+ sgn¨ ⍵-⍺}
 forward_body ← {acc x ← ⍵ ⋄ next ← ⍺ move_toward x ⋄ ((⊂next),acc) next}
 move ← { next ← (⍵+⊃¯1↑⍺) ⋄ (⊂next),⍨ ⊃⊃forward_body/ (¯1↓⍺),(⊂⍬ next)}
 
-eval_future ← {⊃move⍨/ (⊂⍺),⍨ ⍵}
-eval ← {⊃ eval_future⍨/ (⌽⍵),(⊂⍺)}
+eval_future ← {⊃{a b←⍵ ⋄ r←b move ⍺ ⋄ (a,⊂⊃r) r}/ (⊂⍬ (⍺)),⍨ ⍵}
+eval ← {⊃ {a b ← ⍵ ⋄ r ← b eval_future ⍺ ⋄ (a,⊃r) (1⊃r)}/ (⌽⍵),(⊂⍬ (⍺))}
 
 
-part1 ← (parts 10) ∘ eval ∘ future ∘ parse
-part2 ← ⊢∘2
+part1 ← {≢∪⊃ ((parts  2)∘eval) future parse ⍵}
+part2 ← {≢∪⊃ ((parts 10)∘eval) future parse ⍵}
 
 
 data ← ⊃⎕NGET ⍞1
 ⎕ ← part1 data
 ⎕ ← part2 data
-
-
-####
-###.
-##..
-####
