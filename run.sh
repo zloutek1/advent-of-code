@@ -32,7 +32,7 @@ if [ $# = 1 ];
 then
     test $1;
 else
-    for day in */
+    for day in $(ls -dv */)
     do
         test $day;
     done
