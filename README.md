@@ -15,3 +15,4 @@ I try to have a different theme each year. So far my thememes have been
 | 2021 | For each day use a differnet language  |
 | 2022 | Use [APL](https://en.wikipedia.org/wiki/APL_(programming_language)) |
 | 2023 | Microsoft Excel 365 |
+| 2024 | Microsoft Excel 365 |
